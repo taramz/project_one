@@ -11,9 +11,12 @@ Table of Contents:
 - project_one_script.R
 - Project_One.Rmd
 - Project_One.pdf
+- references.bib
 
 The project_one_script.R script contains the pre-processing that needed to be done prior to the analysis of the data, as well as the data manipulation performed. This pre-processing includes converting the race, sex, ethnicity, employment, and education columns from binary numbers to the actual values they represent (ex. turning 1 in the sex column to F). The code is extensively commented to enhance understanding.
 
-The Proejct_One.Rmd file consists of both the written portions of the report as well as the embedded code. The accompanying PDF file (Project_One.pdf) is provided as well.
+The Project_One.Rmd file consists of both the written portions of the report as well as the embedded code. The accompanying PDF file (Project_One.pdf) is provided as well.
+
+The references.bib file includes the references used to write teh report.
 
 This project has been completed with help from Dr. Lauren Micalizzi at Brown University.
