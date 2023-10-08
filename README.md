@@ -8,7 +8,10 @@ Several packages were used in the this analysis. Their names and uses are outlin
 - Displaying Tables: kableExtra, gtsummary
 
 Table of Contents:
-- data_manipulation.R
-- project_1_report.Rmd
+- project_script.R
+- Project_One.Rmd
+- Project_One.pdf
 
-The data_manipulation.R script contains the pre-processing that needed to be done prior to the analysis of the data. This pre-processing includes converting the race, sex, ethnicity, employment, and education columns from binary numbers to the actual values they represent (ex. turning 1 in the sex column to F).
+The project_script.R script contains the pre-processing that needed to be done prior to the analysis of the data, as well as the data manipulation and visualization performed. This pre-processing includes converting the race, sex, ethnicity, employment, and education columns from binary numbers to the actual values they represent (ex. turning 1 in the sex column to F). The code is extensively commented to enhance understanding.
+
+This project has been completed with help from Dr. Lauren Micalizzi at Brown University.
