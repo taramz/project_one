@@ -195,6 +195,14 @@ smoke_exp_over_time <- smoke_exp %>%
   summarize(count = sum(smoke_exposure, na.rm = TRUE), .groups = 'drop_last') %>%
   filter(count > 0)
 
+# Show the number of individuals that fall into each of the smoking levels at both time periods that urine cotinine levels are provided for.
+data %>%
+  select(smoking_level_34wk, smoking_level_pp6mo) %>%
+  tbl_summary(label = list('smoking_level_34wk' ~ 'Smoking Level (34 Week Gestation)',
+                           'smoking_level_pp6mo' ~ 'Smoking Level (6 Months Postpartum)')) %>%
+  as_gt() %>%
+  gt::tab_header(title = 'Table 3: Smoking Level by Urine Cotinine Pre- and Post- Pregnancy')
+
 # Get the percentage of child substance use each substance contributes to based
 # on the smoking level of the parent at 34 weeks gestation.
 substance_use_34wk <- data %>%

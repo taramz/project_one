@@ -40,6 +40,18 @@ suppressPackageStartupMessages(library(gridExtra))
 
 data <- read.csv('../Projects/project_1.csv')
 
+# Data Pre-Processing
+# (1) Turn race columns from dummy-coded into single race column.
+#     Note: in cases where there are two races checked, store them as biracial.
+# (2) Convert sex, ethnicity, employment, and education columns from numbers
+#     into the actual values (taken from the data codebook).
+# (3) For income value 250,000 remove the extra space and column.
+#     Convert income column to numeric.
+# (4) Convert smoking column values to 1 or 0 for smoking or no smoking.
+# (5) Create new column for smoking level at 34 weeks gestation period and six
+#     months postpartum. The smoking level is calculated based on the urine
+#     cotinine values. The cut-off values for each level have been taken from
+#     The Transplantation Journal. See citations for more details.
 data <- data %>%
   mutate(parent_race = case_when(paian == 1 & pwhite == 1 | 
                                    paian == 1 & pnhpi == 1 ~ 'Biracial',
@@ -92,7 +104,7 @@ data <- data %>%
                                          cotimean_pp6mo < 500 ~ 'passive',
                                          TRUE ~ 'active smoker'))
 
-# Demographic Table
+# Create Demographic Table
 data %>%
   mutate(page = as.numeric(page)) %>%
   select(page, parent_sex, parent_race, ethnic) %>%
@@ -105,7 +117,7 @@ data %>%
   as_gt() %>%
   gt::tab_header(title = 'Table 1: Data Demographics')
 
-# Financial Table
+# Create Financial Table
 data %>%
   select(employed, education, income) %>%
   tbl_summary(type = income ~ 'continuous',
@@ -126,6 +138,7 @@ The plots do show that the total number of self-reported smokers at each trimest
 As these measures are self-reported, there is a chance that they might be incorrect; many mothers might not want to admit their smoking behaviors immediately following the birth of their child. Additionally, for the collection of race data, individuals are able to check off which race they identify with. As some individuals may have checked off multiple races, there may be a few cases of double counting.
 
 ```{r, fig.height = 5.25, fig.align = 'center'}
+# Creating a race lookup table for the parent
 race_lookup <- data %>%
   gather(key = 'race', value = 'value', 
          c(paian, pasian, pblack, pwhite, pnhpi, prace_other)) %>%
@@ -169,6 +182,7 @@ pp_smoking_by_race <- post_partum_smoking %>%
   summarize(count = sum(smoking, na.rm = TRUE), .groups = 'drop_last') %>%
   filter(count > 0)
 
+# Make two plots: one for smoking during pregnancy & one for postpartum smoking.
 smoking_plot_1 <- ggplot(smoking_by_race, 
                          aes(x = trimester, y = count, fill = race, label = count)) +
   geom_bar(stat = 'identity') +
@@ -204,6 +218,9 @@ These values from the original study unfortunately only provide information on S
 Smoke exposure results seem to fluctuate slightly, but for the most part, we have around 10 individuals reporting smoke exposure at each of these time points.
 
 ```{r, fig.height = 3, fig.align = 'center'}
+# Pivot the data to get values for smoke exposure at each time point postpartum.
+# This data comes from the newer study and includes time periods at 6 months,
+# 12 months, 2 years, 3 years, 4 years, and 5 years.
 smoke_exp <- data %>%
   gather(key = 'time', value = 'smoke_exposure', c(smoke_exposure_6mo, smoke_exposure_12mo,
                                                    smoke_exposure_2yr, smoke_exposure_3yr,
@@ -211,6 +228,8 @@ smoke_exp <- data %>%
   select(parent_id, time, smoke_exposure) %>%
   mutate(time = substring(time, 16))
 
+# Get the number of self-reported smoke exposures at each time point
+# stratified by race.
 smoke_exp_over_time <- smoke_exp %>%
   left_join(race_lookup, by = 'parent_id', relationship='many-to-many') %>%
   filter(!is.na(smoke_exposure)) %>%
@@ -218,7 +237,9 @@ smoke_exp_over_time <- smoke_exp %>%
   summarize(count = sum(smoke_exposure, na.rm = TRUE), .groups = 'drop_last') %>%
   filter(count > 0)
 
+# Order the x-axis
 level_order <- c('6mo', '12mo', '2yr', '3yr', '4yr', '5yr')
+# Plot the smoke exposure postpartum over time by race.
 smoke_exp_plot <- ggplot(smoke_exp_over_time, aes(x = factor(time, level = level_order), 
                                 y = count, fill = race, label = count)) +
   geom_bar(stat = "identity") +
@@ -240,6 +261,7 @@ It appears that at 34 weeks pregnant, most women in the study would be classifie
 These numbers differ slightly with the values in the plots above, but as the cut-off numbers are only estimates, that could be the reason for this difference.
 
 ```{r}
+# Show the number of individuals that fall into each of the smoking levels at both time periods that urine cotinine levels are provided for.
 data %>%
   select(smoking_level_34wk, smoking_level_pp6mo) %>%
   tbl_summary(label = list('smoking_level_34wk' ~ 'Smoking Level (34 Week Gestation)',
@@ -253,6 +275,8 @@ Some of the consequences of SDP exposure include externalizing behavior such as 
 It would appear that 25% of children of passive smokers at 34 weeks have engaged in some form of substance use, compared to 36% of children of passive smokers at 6 months postpartum. Additionally, we see that 13% of children of nonsmokers at 34 weeks have engaged in some form of substance use, compared to 11% of children of nonsmokers at 6 months postpartum. This would indicate that in the case of smoking, children who have been exposed to it post-birth are more likely to engage in substance use, while those who have not been exposed to it after birth are less likely. Again, this is a small sample size, so we are not able to draw any conclusions, but this could be indicative of a time effect of smoke exposure on a child's substance use. What is surprising, however, is that there is no substance use among the child of a heavy smoker at 6 months postpartum. As there is only one child of a heavy smoker, they could just be an outlier.
 
 ```{r}
+# Get the percentage of child substance use each substance contributes to based
+# on the smoking level of the parent at 34 weeks gestation.
 substance_use_34wk <- data %>%
   mutate(smoking_level = smoking_level_34wk) %>%
   group_by(smoking_level) %>%
@@ -262,6 +286,9 @@ substance_use_34wk <- data %>%
   mutate(time = '34 weeks') %>%
   select(smoking_level, time, sub_use_perc)
 
+# Get the percentage of child substance use each substance contributes to based
+# on the smoking level of the parent at 6 months postpartum.
+# Join it with the results from 34 weeks gestation.
 substance_use_total <- data %>%
   mutate(smoking_level = smoking_level_pp6mo) %>%
   group_by(smoking_level) %>%
@@ -284,6 +311,9 @@ Furthermore, I wanted to see which substances make up the majority of total subs
 Table 5 also provides information not just on the percentage of substance use by medium, but the average number of days that a substance has been used in the past 30 days. Marijuana appears to be, by far, the most frequently used substance, being used, on average, 11 of the past 30 days. Alcohol comes second, being used on average, 2.75 days of the past 30 days. E-cigarettes and cigarettes are not used as frequently on the other hand. These are self-reported measures by the children, which could be cause for concern, as they might not want to openly admit to using some of these substances.
 
 ```{r}
+# Get the rate of total substance use by medium.
+# Filter to include only individuals who have self-reported substance use and
+# get the rate of use among each medium.
 substance_use <- data %>%
   filter(e_cig_ever == 1 | cig_ever == 1 | alc_ever == 1 | mj_ever == 1) %>%
   select(e_cig_ever, mj_ever, alc_ever, cig_ever) %>%
@@ -292,6 +322,9 @@ substance_use <- data %>%
             alc = sum(alc_ever, na.rm=TRUE)/n(),
             cig = sum(cig_ever, na.rm=TRUE)/n())
 
+# Get the average number of days (out of the past 30 days) that children who
+# have engaged in substance use have used a substance, organized by substance.
+# Join this with a vector of substance names using cbind for cleanliness.
 sub_use_30 <- data %>%
   filter(e_cig_ever == 1 | cig_ever == 1 | alc_ever == 1 | mj_ever == 1) %>%
   select(num_cigs_30, num_e_cigs_30, num_alc_30, num_mj_30) %>%
@@ -305,6 +338,7 @@ sub_use_30 <- data %>%
   cbind(substance = c('E Cigarette', 'Marijuana', 'Alcohol', 'Cigarette')) %>%
   select(substance, days_used)
 
+# Combine the two tables together to display using kable.
 substance_use <- substance_use %>% 
   t() %>%
   as.data.frame() %>%
@@ -330,6 +364,8 @@ In both plots, we see that the distribution of SWAN scores of children exposed t
 In the plot of SWAN Inattentive scores, both distributions appear to peak at SWAN scores above 6, but we do see that the distribution of children exposed to SDP is shifted slightly more to the right than the distribution of children not exposed to SDP.
 
 ```{r, fig.align = 'center', fig.height = 5}
+# The SWAN scores for these individuals should be NA.
+# In the data pre-processing, they became 0. Changing them back to NA.
 parent_ids <- c(50502, 51202, 51602, 52302, 53002, 53502, 53902, 54402, 54602, 54702)
 
 for (id in parent_ids) {
@@ -338,12 +374,18 @@ for (id in parent_ids) {
 }
 
 # Smoking during pregnancy
+# If they smoked at any point during pregnancy, set to SDP. 
+# If not, set to No SDP.
 sdp <- smoking_trimester %>%
   filter(!is.na(smoking)) %>%
   mutate(sdp = case_when(smoking == 1 ~ 'SDP',
                          TRUE ~ 'No SDP'))
 
 # Smoking through pregnancy
+# If they smoked at all points during pregnancy, set to 1.
+# If not, set to 1.
+# Get the percentage of individuals who smoked throughout pregnancy divided by
+# the number of individuals who smoked during pregnancy.
 percentage_stp <- sdp %>%
   filter(sdp == 'SDP') %>%
   group_by(parent_id) %>%
@@ -351,6 +393,7 @@ percentage_stp <- sdp %>%
                             TRUE ~ 0)) %>%
   summarize(perc = sum(stp)/n())
 
+# Make two plots: distribution of both types of SWAN scores by SDP status
 sdp_plot_1 <- ggplot(sdp, aes(x=swan_inattentive, fill=sdp)) +
   geom_density(alpha=.25) +
   ylim(0,0.1) +
@@ -387,6 +430,9 @@ The Brief Problem Monitor is used for normed multi-informant assessment of child
 The average BPM score for attention problems and externalizing problems on self appears to be higher for children exposed to SDP than children who have not been exposed to SDP. This could explain the higher SWAN scores and the increased substance use among children exposed to SDP. However, we do see that there does not appear to be much difference in the scores for internalizing problems on self between children exposed to SDP and those not exposed.
 
 ```{r, fig.align = 'center', fig.height = 4}
+# Create a separate column to store the races of the children along with the SDP
+# effects. There are two categories of biracial children (AIAN/Black and Black/
+# White) so I just defined these as biracial.
 sdp_race <- sdp %>%
   mutate(child_race = case_when(taian == 1 & tblack == 'white' |
                                   twhite == 1 & tblack == 1~ 'biracial',
@@ -397,7 +443,8 @@ sdp_race <- sdp %>%
                           twhite == 1 ~ 'white',
                           trace_other == 1 ~ 'other'))
 
-
+# For each category of SDP and Race, calculate the average ERQ scores for
+# expressive suppression and cognitive reappraisal.
 erq <- sdp_race %>%
   filter(!is.na(child_race)) %>%
   group_by(sdp, child_race) %>%
@@ -405,6 +452,8 @@ erq <- sdp_race %>%
             exp = mean(erq_exp, na.rm=TRUE), .groups = 'drop_last') %>%
   gather(key = 'erq', value = 'value', c(cog, exp))
 
+# For each category of SDP and Race, calculate the average BPM scores for
+# attention, externalizing, and internalizing.
 bpm <- sdp_race %>%
   filter(!is.na(child_race)) %>%
   group_by(sdp, child_race) %>%
@@ -413,6 +462,7 @@ bpm <- sdp_race %>%
             int = mean(bpm_int, na.rm=TRUE), .groups = 'drop_last') %>%
   gather(key = 'bpm', value = 'value', c(att,ext,int))
 
+# Plot average BPM values by SDP status
 ggplot(bpm, aes(x = sdp, y = value, fill = bpm)) +
   geom_bar(stat = "identity", position = position_dodge()) +
   scale_fill_manual(name = 'Brief Problem Monitor Section', labels = c('Attention Problems on Self',
@@ -429,6 +479,7 @@ We have also been provided scores form the Emotion Regulation Questionnaire. The
 When comparing the responses to the emotion regulation questionnaire by smoking during pregnancy, we see that children who have been exposed to SDP use expressive suppression more than children who have not been exposed. Additionally, the average score for cognitive reappraisal appears to be higher for children exposed to SDP than those not exposed, although this difference appears to be relatively small, with only a difference of approximately 0.5.
 
 ```{r, fig.align = 'center', fig.height = 4}
+# Plot average ERQ values by SDP status
 erq_plot <- ggplot(erq, aes(x = sdp, y = value, fill = erq)) +
   geom_bar(stat = "identity", position = position_dodge()) +
   scale_fill_manual(name = 'Emotion Regulation Questionnaire Section', labels = c('Cognitive Reappraisal',
