@@ -7,28 +7,40 @@ bibliography: references.bib
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
 
-Pregnant individuals are advised to refrain from smoking throughout their pregnancy. Studies have shown that smoking during pregnancy can be linked to several adverse birth outcomes, such as low birth weight, restricted head growth, placental problems, and other issues.
+## Abstract
 
-Pregnant individuals are advised to refrain from smoking throughout their pregnancy. This is due to the fact that smoking during pregnancy can be linked to several adverse birth outcomes, such as low birth weight, restricted head growth, placental problems, and other issues.
+Smoking during pregnancy is associated with adverse birth outcomes, yet its prevalence persists. A study involving 800 pregnant individuals examined the effectiveness of a tailored video intervention to reduce smoking and environmental tobacco exposure. This analysis focuses on a subset of 100 mothers and children from the study, investigating demographics, substance use, ADHD scores, and self-regulation assessments. The dataset reveals missing data and a predominantly white sample.
 
-Unfortunately, smoking during pregnancy is a fairly common phenomenon. As of 2014, it has been reported that 8.4% of women smoked at any time during pregnancy [@NIH_2021]. Additionally, 7-15% of U.S. infants born per year are exposed to smoking during pregnancy (SDP). Not only does this have a negative effect on the children and mothers themselves, but it has an economical cost as well. SDP imposes a \$4 billion annual burden on the U.S. economy due to health-care costs. As such, it is important to conduct research on this phenomenon.
+Race-stratified smoking prevalence is explored, showing disparities from national trends. Self-reported smoking decreases postpartum, but the data's reliability is acknowledged. Urine cotinine values indicate a majority as passive or non-smokers. Substance use among children is higher for passive smokers. ADHD scores, particularly hyperactive, peak with trimester smoking.
+
+Self-regulation, measured by the Brief Problem Monitor and Emotion Regulation Questionnaire, presents nuanced results. Internalizing problems are higher per parent reports, but child self-reports show trends with attention and externalizing problems, suggesting potential behavioral effects of smoking.
+
+Postpartum exposure analysis highlights increased ERQ scores with more visits, implying an association with child behavior. The study emphasizes the need for further research on smoking's impact, especially postpartum.
+
+## Introduction
+
+Pregnant individuals are advised to refrain from smoking throughout their pregnancy. This is due to the fact that smoking during pregnancy can be linked to several adverse birth outcomes, such as low birth weight, restricted head growth, placental problems, and other issues [@NIH_2021].
+
+Unfortunately, smoking during pregnancy is a fairly common phenomenon. As of 2014, it has been reported that 8.4% of women smoked at any time during pregnancy [@NIH_2021]. Additionally, 7-15% of U.S. infants born per year are exposed to smoking during pregnancy (SDP). Not only does this have a negative effect on the children and mothers themselves, but it has an economical cost as well. SDP imposes a \$4 billion annual burden on the U.S. economy due to health-care costs [@Micalizzi]. As such, it is important to conduct research on this phenomenon.
 
 A study published in January 2017 involved 800 pregnant people who were smoke exposed (either current smokers, smokers who quit on their own, or exposed to smoke of others), pregnant with only one baby, had access to a telephone and video player, and were randomized to either experimental or control conditions. This study aimed to compare the effectiveness of a tailored video intervention at reducing smoking and environmental tobacco exposure during and after pregnancy [@risica2017tailored].
 
 A subset of 100 mothers and children involved in this study make up the sample for the current study, conducted by Dr. Micalizzi. This study consists of three laboratory sessions: baseline, 6 month, and 12 month sessions. As part of this study, the parents and children complete self-regulatory assessments and provide self-reported information on substance use.
 
-The data provided consists of 49 unique parents and their children. The demographic information of the parents has been provided in Tables 1 and 2 below.
+Using the information collected from these mothers at the baseline laboratory session, we want to see if we can identify a link between smoke exposure during and after pregnancy and adverse behavioral outcomes, such as issues with self-regulation, conduct disorder, substance use, and ADHD.
 
-From Table 1, we see that the mean age of individuals in this dataset is 37. Of the 41 individuals that provided their assigned sex at birth, there were 40 women and 1 man. However, this could be a data quality issue, and is worth looking into further. 61% of individuals in this dataset were white, 15% were Native Hawaiian/Pacific Islanders, 7.3% were biracial (meaning they identified as two races), and 1% were American Indian/Alaska Native. Additionally, 15% marked their race as other and 32% were Hispanic/Latino.
+## Data
 
-Table 2 provides information on the education and financial status of individuals in this dataset. We can see that 54% of individuals are employed, 29% lack any form of employment, and 17% have part-time employment. As such, it is not surprising that the median income is \$46,848. We also have information on the highest level of education completed by individuals in this dataset, and we see that most have attended some college, with 24% having a 4 year degree, 7.3% having a 2 year degree, and 4.9% having gone on to have a post-graduate degree.
+The data provided consists of data collected from 49 unique parents and their children at the baseline laboratory session. Demographic and financial information has been collected from each mother, along with other information regarding their cigarette use both during and after pregnancy. The demographic information of the mother is provided in Table 1. Additionally, results from questionnaires such as the Brief Problem Monitor Questionnaire, Emotion Regulation Questionnaire, and Parental Knowledge Questionnaire were collected. The sum of responses on the SWAN rating scale for both types of ADHD (inattentive and hyperactive) are also present in the data.
 
-Among all variables in Table 1 and employment status in Table 2, we see that there are 8 unknown variables. Upon further investigation, all of these rows are missing values for the same individuals. That is, if there is an individual has a missing value in one of these columns, then they have a missing value in the other seven columns. As this could be due to any number of confounders, it is fair to say that this data is missing at random or missing not at random. Whether the data is missing at random or missing not at random depends on the data that we have collected.
+For the child, demographic information as well as information related to their substance use is collected. Results from the Brief Problem Monitor Questionnaire, Emotion Regulation Questionnaire, and Parental Knowledge Questionnaire are in the data as well.
 
-For the data to be missing not at random, we would need to have collected data on the confounder related to the reason for missingness in this demographic variables. However, the confounder could be one of several different things. These individuals might not have had time to complete the survey, might not have had access to a computer to complete the survey, or might not have felt comfortable revealing this information. There are several different reasons that could be the reason for these missing values, but they are not accounted for in our data. Therefore, I would say this data is missing at random.
+From Table 1, we are able to see that the data is overwhelmingly white, which could be indicative that our results might not be generalizable to the target population of mothers who smoked during pregnancy and their children. We also see that the majority of mothers in this dataset have at least attended some college and have either full or part-time employment.
+
+Of all the variables in Table 1, with the exception of annual income, we see that there are 8 unknown variables. Upon further investigation, we are able to conclude that if an individual has a missing value in one of these columns, they have a missing value in the other seven columns. This could be due to any number of confounders, but they are not accounted for in our data, so it is fair to conclude that the data is missing at random.
 
 ```{r, echo = FALSE}
 suppressPackageStartupMessages(library(tidyverse, warn.conflicts = FALSE))
@@ -38,7 +50,7 @@ suppressPackageStartupMessages(library(kableExtra))
 library(ghibli)
 suppressPackageStartupMessages(library(gridExtra))
 
-data <- read.csv('../Projects/project_1.csv')
+data <- read.csv('/Users/taram/Documents/Grad School/Year 2/Practical Data Analysis/Projects/project_1.csv')
 
 # Data Pre-Processing
 # (1) Turn race columns from dummy-coded into single race column.
@@ -107,35 +119,29 @@ data <- data %>%
 # Create Demographic Table
 data %>%
   mutate(page = as.numeric(page)) %>%
-  select(page, parent_sex, parent_race, ethnic) %>%
-  tbl_summary(type = page ~ 'continuous',
+  dplyr::select(page, parent_sex, parent_race, ethnic, employed, education, income) %>%
+  tbl_summary(type = c(income ~ 'continuous', page ~ 'continuous'),
               label = list(page ~ 'Age',
                            parent_sex ~ 'Sex',
                            parent_race ~ 'Race',
-                           ethnic ~ 'Hispanic/Latino'),
-              sort = list(everything() ~ 'frequency')) %>%
-  as_gt() %>%
-  gt::tab_header(title = 'Table 1: Data Demographics')
-
-# Create Financial Table
-data %>%
-  select(employed, education, income) %>%
-  tbl_summary(type = income ~ 'continuous',
-              label = list(employed ~ 'Employed',
+                           ethnic ~ 'Hispanic/Latino',
+                           employed ~ 'Employed',
                            education ~ 'Highest Level of Education',
                            income ~ 'Annual Income'),
               sort = list(everything() ~ 'frequency')) %>%
   as_gt() %>%
-  gt::tab_header(title = 'Table 2: Education & Financial Status')
+  gt::tab_header(title = 'Table 1: Data Demographics')
 ```
 
-In the original study, data on the smoking habits of the individuals in the study was collected at three different time points during the pregnancy: 16 weeks, 22 weeks, and 32 weeks (the trimesters). Additionally, this data was collected at four different postpartum time points: the first postpartum visit, the second postpartum visit, 12 weeks postpartum, and 6 months postpartum.
+## Exploratory Data Analysis
 
-In a study posted by the CDC in 2016, they found that Non-Hispanic American Indian or Alaska Native women had the highest prevalence of smoking during pregnancy, indicating potential for race-based confounding [@drake2018cigarette]. As such, I wanted to look at the prevalence of smoking at each of the time points by race. Our results seem to depart from the CDC study, as it appears that white women are the predominant smokers at each of the time points. However, as we are looking at a very small sample size, and there are few individuals who have not reported their race, it is hard to say if this is representative of the general population.
+### Smoking Differences by Race
 
-The plots do show that the total number of self-reported smokers at each trimester hovers around 10, with its peak during the second trimester. However, at the first postpartum visit, the numbers plummet, with only 3 individuals identifying as smokers during this time period. As time goes on, we see the numbers start to increase, with 16 total smokers by the fourth visit (at 6 months postpartum). However, the numbers by race appear to be largely constant: during the second postpartum visit, 1 American Indian/Alaska Native and 1 Black mother report being smokers, and this number doesn't change over the next two visits.
+In the original study, data on the smoking habits of mothers was collected at three different time points during the pregnancy: 16 weeks, 22 weeks, and 32 weeks (the trimesters). Additionally, this information was collected at four different time points postpartum: the first two postpartum visits, 12 weeks postpartum, and 6 months postpartum.
 
-As these measures are self-reported, there is a chance that they might be incorrect; many mothers might not want to admit their smoking behaviors immediately following the birth of their child. Additionally, for the collection of race data, individuals are able to check off which race they identify with. As some individuals may have checked off multiple races, there may be a few cases of double counting.
+In a study conducted by the CDC in 2016, they found that Non-Hispanic American Indian or Alaska Native women had the highest prevalence of smoking during pregnancy, indicating potential for race-based confounding [@drake2018cigarette]. As such, I wanted to look at the prevalence of smoking at each of the different time points, stratified by race, which can be seen in Figure 1. Due to the limited amount of data, race was grouped into three categories: white, non-white, and not provided. Our results don't seem to align with the CDC, as in this data, white women are the predominant smokers at each of the time points. However, as our sample size is very small and there are several individuals who did not report their race, it is hard to say if this is representative of the general population.
+
+Figure 1 shows that the total number of self-reported smokers at each trimester hovers around 10, peaking during the second trimester. However, at the first postpartum visit, the numbers plummet, with only 3 individuals identifying as smokers during this time period. As time goes on, though, we see the numbers start to increase, with 16 total smokers by the 6th month postpartum visit. However, this is a self-reported measure of smoking, so it may be inaccurate; many mothers may not want to admit their smoking behaviors during or immediately following the birth of their child. Additionally, race is a self-reported measure in this data, where individuals check off their race. As they can check off multiple races, there may be a few cases of double-counting.
 
 ```{r, fig.height = 5.25, fig.align = 'center'}
 # Creating a race lookup table for the parent
@@ -144,7 +150,11 @@ race_lookup <- data %>%
          c(paian, pasian, pblack, pwhite, pnhpi, prace_other)) %>%
   filter(!is.na(value)) %>%
   filter(value == 1) %>%
-  select(parent_id, race)
+  dplyr::select(parent_id, race) %>%
+  mutate(race = case_when(race == 'pblack' ~ 'black',
+                          race == 'pwhite' ~ 'white',
+                          !(race %in% c('pblack', 'pwhite')) ~ 'other',
+                          is.na(race) ~ 'not provided'))
 
 # Pivot the data to get whether or not the mother smoked during each trimester.
 # 16 weeks represents trimester 1, 22 weeks represents trimester 2, and 32
@@ -158,7 +168,7 @@ smoking_trimester <- data %>%
 
 # Get the number of smokers at each trimester stratified by race.
 smoking_by_race <- smoking_trimester %>%
-  select(parent_id, trimester, smoking) %>%
+  dplyr::select(parent_id, trimester, smoking) %>%
   left_join(race_lookup, by = 'parent_id', relationship='many-to-many') %>%
   group_by(trimester, race) %>%
   summarize(count = sum(smoking, na.rm = TRUE), .groups = 'drop_last') %>%
@@ -176,7 +186,7 @@ post_partum_smoking <- data %>%
 
 # Get the number of smokers at each postpartum visit stratified by race.
 pp_smoking_by_race <- post_partum_smoking %>%
-  select(parent_id, pp_visit, smoking) %>%
+  dplyr::select(parent_id, pp_visit, smoking) %>%
   left_join(race_lookup, by = 'parent_id', relationship='many-to-many') %>%
   group_by(pp_visit, race) %>%
   summarize(count = sum(smoking, na.rm = TRUE), .groups = 'drop_last') %>%
@@ -187,11 +197,9 @@ smoking_plot_1 <- ggplot(smoking_by_race,
                          aes(x = trimester, y = count, fill = race, label = count)) +
   geom_bar(stat = 'identity') +
   geom_text(size = 3, position = position_stack(vjust = 0.5), color="white") +
-  scale_fill_manual(name = 'Race', labels = c('American Indian/Alaska Native',
-                                                'Black',
-                                                'Other',
-                                                'White',
-                                                'Not Provided'),
+  scale_fill_manual(name = 'Race', labels = c('Non-white',
+                                              'White',
+                                              'Not Provided'),
                       values = ghibli_palette('LaputaMedium')) +
   labs(title = 'Count of Self-Reported Smokers at Each Trimester',
        x = 'Trimester',
@@ -201,11 +209,9 @@ smoking_plot_2 <- ggplot(pp_smoking_by_race,
                          aes(x = pp_visit, y = count, fill = race, label = count)) +
   geom_bar(stat = 'identity') +
   geom_text(size = 3, position = position_stack(vjust = 0.5), color="white") +
-  scale_fill_manual(name = 'Race', labels = c('American Indian/Alaska Native',
-                                                'Black',
-                                                'Other',
-                                                'White',
-                                                'Not Provided'),
+  scale_fill_manual(name = 'Race', labels = c('Non-white',
+                                              'White',
+                                              'Not Provided'),
                       values = ghibli_palette('LaputaMedium')) +
   labs(title = 'Count of Self-Reported Smokers at Each Post-Partum Visit',
        x = 'Post-Partum Visit',
@@ -213,9 +219,11 @@ smoking_plot_2 <- ggplot(pp_smoking_by_race,
 grid.arrange(smoking_plot_1, smoking_plot_2, nrow = 2)
 ```
 
-These values from the original study unfortunately only provide information on SDP and smoke exposure up to 6 months postpartum. The new study has information on smoke exposure up to 5 years postpartum. The information has been shown in the visualization before, stratified by race. Only individuals who identify as Native Hawaiian/Pacific Islanders, White, or Other appear to have self-reported smoke exposure by either them or a partner. No American Indian or Alaskan Native women have self-reported smoke exposure post-pregnancy, which does not align what we would expect based on the CDC findings.
+**Figure 1. Count of Self-Reported Smokers During and After Pregnancy by Race**
 
-Smoke exposure results seem to fluctuate slightly, but for the most part, we have around 10 individuals reporting smoke exposure at each of these time points.
+The original study only provides informations on smoke exposure up to 6 months postpartum. The current study aims to expand upon this work by collecting information on smoke exposure up to five years post-pregnancy. Therefore, we wanted to look at differences in reported smoke exposure post-pregnancy, again stratified by race. The results are in Figure 2.
+
+Similar to the results from the original study, at each time point, the smokers are predominantly white mothers. Additionally, the number of smokers across each of these time points seems to stay relatively constant, indicating continuous smoking behavior by these individuals.
 
 ```{r, fig.height = 3, fig.align = 'center'}
 # Pivot the data to get values for smoke exposure at each time point postpartum.
@@ -225,7 +233,7 @@ smoke_exp <- data %>%
   gather(key = 'time', value = 'smoke_exposure', c(smoke_exposure_6mo, smoke_exposure_12mo,
                                                    smoke_exposure_2yr, smoke_exposure_3yr,
                                                    smoke_exposure_4yr, smoke_exposure_5yr)) %>%
-  select(parent_id, time, smoke_exposure) %>%
+  dplyr::select(parent_id, time, smoke_exposure) %>%
   mutate(time = substring(time, 16))
 
 # Get the number of self-reported smoke exposures at each time point
@@ -244,35 +252,42 @@ smoke_exp_plot <- ggplot(smoke_exp_over_time, aes(x = factor(time, level = level
                                 y = count, fill = race, label = count)) +
   geom_bar(stat = "identity") +
   geom_text(size = 3, position = position_stack(vjust = 0.5), color="white") +
-  scale_fill_manual(name = 'Race', labels = c('Native Hawaiian/Pacific Islander',
-                                                'Other',
+  scale_fill_manual(name = 'Race', labels = c('Non-white',
                                                 'White'),
-                      values = ghibli_palette('LaputaMedium')) +
+                      values = ghibli_palette('LaputaMedium')[c(1,3)]) +
   labs(title = 'Count of Reported Smoke Exposure Post-Pregnancy',
        x = 'Time Period',
        y = 'Count')
 grid.arrange(smoke_exp_plot, nrow = 1)
 ```
 
-Though these self-reported measures provide information on whether or not an individual was smoking, it doesn't tell us how heavy of a smoker they are, whether they smoke frequently or smoke only in passing. The data collected includes information on urine cotinine values at 34 weeks into the pregnancy and 6 months postpartum. The cut-off values for the different levels of smokers have been a subject of lots of research, but for this analysis, I am using the following criteria: nonsmokers will have levels less than 100 ng/mL, passive smokers would have levels between 100 to 500 ng/mL, and active smokers would have levels greater than 500 ng/mL [@hellemons2015assessment]. Table 3 shows the numbers of women that fall in each of these categories both during their third trimester as well as 6 months postpartum.
+**Figure 2. Count of Reported Smoke Exposure Post-Pregnancy by Race**
 
-It appears that at 34 weeks pregnant, most women in the study would be classified as non-smokers, due to their urine cotinine values. There are 8 that would be classified as passive smokers, and 11 that this information has not been recorded for. At 6 months postpartum, we see one individual classified as an active smoker, 26 classified as non-smokers, and 11 classified as passive smokers.
+### Classification of Smokers
 
-These numbers differ slightly with the values in the plots above, but as the cut-off numbers are only estimates, that could be the reason for this difference.
+These self-reported measures provide information on whether or not an individual was smoking, but they do not tell us how heavy of a smoker these mothers are. There are other self-reported measures that provide this information for the past 30 days, but not during pregnancy. However, the urine cotinine values collected at 34 weeks into pregnancy and 6 months postpartum can be used for this purpose.
+
+Cut-off values of urine cotinine for different levels of smokers have been subject to lots of research, but for this analysis, the following criteria will be used: nonsmokers will have levels less than 100 ng/mL, passive smokers would have levels between 100 to 500 ng/mL, and active smokers would have levels greater than 500 ng/mL [@hellemons2015assessment]. Table 2 shows the proportion of mothers in each of these categories at both time points. Surprisingly, there are no active smokers at the 34 week gestation period; in fact, the majority of mothers at each of these time points are either passive smokers or non-smokers. These numbers differ slightly with the values in Figure 1 and Figure 2, but as the cut-off numbers are only estimates, that could be the reason for this difference.
+
+Missing data does appear to be a problem for this data, with 11 missing values at both time points. That is a substantial percentage of the data ($\approx 20\%$), indicating that the real proportion could be noticeably different than what is presented in Table 2.
 
 ```{r}
 # Show the number of individuals that fall into each of the smoking levels at both time periods that urine cotinine levels are provided for.
 data %>%
-  select(smoking_level_34wk, smoking_level_pp6mo) %>%
+  dplyr::select(smoking_level_34wk, smoking_level_pp6mo) %>%
   tbl_summary(label = list('smoking_level_34wk' ~ 'Smoking Level (34 Week Gestation)',
                            'smoking_level_pp6mo' ~ 'Smoking Level (6 Months Postpartum)')) %>%
   as_gt() %>%
-  gt::tab_header(title = 'Table 3: Smoking Level by Urine Cotinine Pre- and Post- Pregnancy')
+  gt::tab_header(title = 'Table 2: Smoking Level by Urine Cotinine Pre- and Post- Pregnancy')
 ```
 
-Some of the consequences of SDP exposure include externalizing behavior such as attention-deficit/hyperactivity disorder (ADHD), conduct disorder, or substance use. Therefore, I wanted to see if these patterns are prevalent in the data. To start, I looked at substance use among children of active or passive smokers and compared it to substance use among children of nonsmokers. Substance use is defined as any child that has tried e-cigarettes, cigarettes, alcohol, or marijuana. The results of this analysis are shown in Table 4.
+### Effects of Smoking on Child
 
-It would appear that 25% of children of passive smokers at 34 weeks have engaged in some form of substance use, compared to 36% of children of passive smokers at 6 months postpartum. Additionally, we see that 13% of children of nonsmokers at 34 weeks have engaged in some form of substance use, compared to 11% of children of nonsmokers at 6 months postpartum. This would indicate that in the case of smoking, children who have been exposed to it post-birth are more likely to engage in substance use, while those who have not been exposed to it after birth are less likely. Again, this is a small sample size, so we are not able to draw any conclusions, but this could be indicative of a time effect of smoke exposure on a child's substance use. What is surprising, however, is that there is no substance use among the child of a heavy smoker at 6 months postpartum. As there is only one child of a heavy smoker, they could just be an outlier.
+Some consequences of SDP exposure include externalizing behavior such as attention-deficit/hyperactivity disorder (ADHD), conduct disorder, or substance use. We wanted to see if these patterns are prevalent in the data. To start, Table 3 was constructed to look at the percent of substance use among children based on their mothers' smoking status at the two different time periods.
+
+#### Substance Use
+
+Table 3 shows that children of passive smokers are more likely to engage in substance use compared to children of non-smokers. Surprisingly, we see no substance use from the child of the active smoker. As there is only one active smoker in the dataset, this could just be an anomaly and not indicative of the real relationship between smoking status and child substance use, when the mother was an active smoker.
 
 ```{r}
 # Get the percentage of child substance use each substance contributes to based
@@ -282,9 +297,9 @@ substance_use_34wk <- data %>%
   group_by(smoking_level) %>%
   filter(!is.na(smoking_level)) %>%
   mutate(substance_use = ifelse(e_cig_ever == 1 | cig_ever == 1 | alc_ever == 1 | mj_ever == 1, 1, 0)) %>%
-  summarize(sub_use_perc = sum(substance_use, na.rm=TRUE)/n() * 100) %>%
+  summarize(sub_use_prop = round(sum(substance_use, na.rm=TRUE)/n(), 2)) %>%
   mutate(time = '34 weeks') %>%
-  select(smoking_level, time, sub_use_perc)
+  dplyr::select(smoking_level, time, sub_use_prop)
 
 # Get the percentage of child substance use each substance contributes to based
 # on the smoking level of the parent at 6 months postpartum.
@@ -294,21 +309,21 @@ substance_use_total <- data %>%
   group_by(smoking_level) %>%
   filter(!is.na(smoking_level)) %>%
   mutate(substance_use = ifelse(e_cig_ever == 1 | cig_ever == 1 | alc_ever == 1 | mj_ever == 1, 1, 0)) %>%
-  summarize(sub_use_perc = sum(substance_use, na.rm=TRUE)/n() * 100) %>%
+  summarize(sub_use_prop = round(sum(substance_use, na.rm=TRUE)/n(), 2)) %>%
   mutate(time = '6 months postpartum') %>%
-  select(smoking_level, time, sub_use_perc) %>%
+  dplyr::select(smoking_level, time, sub_use_prop) %>%
   rbind(substance_use_34wk) %>%
   arrange(desc(smoking_level), time)
 
-colnames(substance_use_total) <- c("Smoking Level", "Time Period", "Percent of Child Substance Use")
+colnames(substance_use_total) <- c("Smoking Level", "Time Period", "Proportion of Child Substance Use")
 
-kable(substance_use_total, booktabs = T, escape = F, caption = "Percent of Child Substance Use by Smoking Level at Different Periods") %>%
+kable(substance_use_total, booktabs = T, escape = F, caption = "Proportion of Child Substance Use by Smoking Level at Different Periods") %>%
   kable_styling(latex_options = 'HOLD_position')
 ```
 
-Furthermore, I wanted to see which substances make up the majority of total substance use. This can be seen in Table 5. Of children engaged in substance use, alcohol is the most popular, with 71% using alcohol, 42% each use marijuana and e-cigarettes, and only 14% use cigarettes.
+Furthermore, we wanted to see which substances made up the majority of total substance use. Do children of smokers tend to prefer certain substances? These values can be seen in Table 4. Of children engaged in substance use, we see that alcohol is the most popular, with 71% of substance use representing alcohol. Surprisingly, the substance used least is cigarettes, with only 14% of substance use attributed to cigarettes.
 
-Table 5 also provides information not just on the percentage of substance use by medium, but the average number of days that a substance has been used in the past 30 days. Marijuana appears to be, by far, the most frequently used substance, being used, on average, 11 of the past 30 days. Alcohol comes second, being used on average, 2.75 days of the past 30 days. E-cigarettes and cigarettes are not used as frequently on the other hand. These are self-reported measures by the children, which could be cause for concern, as they might not want to openly admit to using some of these substances.
+As these are self-reported measures, there is no guarantee that it is completely accurate. There is also a possibility of double-counting as children could check off multiple mediums of substance use.
 
 ```{r}
 # Get the rate of total substance use by medium.
@@ -316,52 +331,29 @@ Table 5 also provides information not just on the percentage of substance use by
 # get the rate of use among each medium.
 substance_use <- data %>%
   filter(e_cig_ever == 1 | cig_ever == 1 | alc_ever == 1 | mj_ever == 1) %>%
-  select(e_cig_ever, mj_ever, alc_ever, cig_ever) %>%
-  summarize(e_cig = sum(e_cig_ever, na.rm=TRUE)/n(),
-            mj = sum(mj_ever, na.rm=TRUE)/n(),
-            alc = sum(alc_ever, na.rm=TRUE)/n(),
-            cig = sum(cig_ever, na.rm=TRUE)/n())
+  dplyr::select(e_cig_ever, mj_ever, alc_ever, cig_ever) %>%
+  summarize(e_cig = round(sum(e_cig_ever, na.rm=TRUE)/n(),2),
+            mj = round(sum(mj_ever, na.rm=TRUE)/n(),2),
+            alc = round(sum(alc_ever, na.rm=TRUE)/n(),2),
+            cig = round(sum(cig_ever, na.rm=TRUE)/n(),2)) %>%
+  t()
 
-# Get the average number of days (out of the past 30 days) that children who
-# have engaged in substance use have used a substance, organized by substance.
-# Join this with a vector of substance names using cbind for cleanliness.
-sub_use_30 <- data %>%
-  filter(e_cig_ever == 1 | cig_ever == 1 | alc_ever == 1 | mj_ever == 1) %>%
-  select(num_cigs_30, num_e_cigs_30, num_alc_30, num_mj_30) %>%
-  summarize(avg_e_cigs = mean(num_e_cigs_30, na.rm=TRUE),
-            avg_mj = mean(num_mj_30, na.rm=TRUE),
-            avg_alc = mean(num_alc_30, na.rm=TRUE),
-            avg_cigs = mean(num_cigs_30, na.rm=TRUE)) %>%
-  t() %>%
-  as.data.frame() %>%
-  mutate(days_used = V1) %>%
-  cbind(substance = c('E Cigarette', 'Marijuana', 'Alcohol', 'Cigarette')) %>%
-  select(substance, days_used)
-
-# Combine the two tables together to display using kable.
-substance_use <- substance_use %>% 
-  t() %>%
-  as.data.frame() %>%
-  mutate(percentage = V1 * 100) %>%
-  select(percentage) %>%
-  cbind(substance = c('E Cigarette', 'Marijuana', 'Alcohol', 'Cigarette')) %>%
-  select(substance, percentage) %>%
-  left_join(sub_use_30, by = "substance")
-
-colnames(substance_use) <- c("Substance", "Percent of Substance Use", "Average Days Used in Past 30 Days")
+colnames(substance_use) <- c("Proportion of Substance Use")
+rownames(substance_use) <- c("E-Cigarette", "Marijuana", "Alcohol", "Cigarette")
 
 kbl(substance_use, booktabs = T, escape = F, caption = 'Substance Use by Medium') %>%
   kable_styling(latex_options="HOLD_position")
 ```
 
-\
-As mentioned earlier, there is a link between smoking during pregnancy and ADHD. In order to see if this trend is prevalent in our data, I created a variable for smoking during pregnancy. In order to determine the appropriate definition for smoking during pregnancy, I looked both at women who reported smoking behavior at any point during pregnancy and women who reported smoking behavior at all points during pregnancy. I found that 10 of the 14 (\~71%) women who reported smoking at some point during pregnancy smoked throughout the entire pregnancy, so I chose to define SDP as smoking at any point during pregnancy.
+#### ADHD
 
-To look at the relationship between SDP and ADHD, I chose to look at how the distribution of SWAN Inattentive and Hyperactive scores differs among children who were exposed to SDP and those who were not. It is worth nothing that if any of the SWAN scores are higher than 6, it indicates that the child is likely ADHD. This has been denoted in the plots below by the dotted line.
+As mentioned previously, there is a link between smoking during pregnancy and ADHD. In order to see if this trend persists in our data, a variable for the number of trimesters a mother smoked was created. All mothers either did not smoke during the pregnancy, smoked during the first trimesters, or smoked for all three trimesters.
 
-In both plots, we see that the distribution of SWAN scores of children exposed to SDP tend to peak more towards the higher values, while the SWAN scores for children not exposed to SDP peak more towards the lower values. This difference is most clear when looking at SWAN Hyperactive scores, as the peak for children not exposed to SDP is closer to 0, while the peak for children exposed to SDP is around 17.
+A child's potential for being ADHD can be determined using the SWAN scores. There are two different SWAN scores provided: one for ADHD-Inattentive and one for ADHD-Hyperactive. It is worth noting that the cut-off for SWAN scores is 6, with a value above 6 indicating that the child is likely ADHD.
 
-In the plot of SWAN Inattentive scores, both distributions appear to peak at SWAN scores above 6, but we do see that the distribution of children exposed to SDP is shifted slightly more to the right than the distribution of children not exposed to SDP.
+In Figure 3, the distribution of SWAN scores was plotted by the number of trimesters a mother smoked. The cut-off value of 6 is denoted by a dotted black line. For the SWAN Inattentive scores, we see that all three distributions peak after the cut-off. However, the scores peak furthest to the right for children whose mothers smoked during all three trimesters of their pregnancy.
+
+We can also see that for the SWAN Hyperactive scores, the distribution of SWAN scores for mothers who did not smoke during pregnancy peaks before the cut-off, while the distributions for mothers who smoked during pregnancy peak after the cut-off. The difference between the distributions of mothers who smoked during all three semester and only one semester appears to be less pronounced with the Hyperactive scores as opposed to the Interactive scores. However a clearer difference between the mothers who did not smoke during pregnancy and those who did can be seen with Hyperactive scores as opposed to Inattentive scores.
 
 ```{r, fig.align = 'center', fig.height = 5}
 # The SWAN scores for these individuals should be NA.
@@ -378,62 +370,61 @@ for (id in parent_ids) {
 # If not, set to No SDP.
 sdp <- smoking_trimester %>%
   filter(!is.na(smoking)) %>%
-  mutate(sdp = case_when(smoking == 1 ~ 'SDP',
-                         TRUE ~ 'No SDP'))
-
-# Smoking through pregnancy
-# If they smoked at all points during pregnancy, set to 1.
-# If not, set to 1.
-# Get the percentage of individuals who smoked throughout pregnancy divided by
-# the number of individuals who smoked during pregnancy.
-percentage_stp <- sdp %>%
-  filter(sdp == 'SDP') %>%
   group_by(parent_id) %>%
-  summarize(stp = case_when(sum(smoking, na.rm=TRUE) == 3 ~ 1,
-                            TRUE ~ 0)) %>%
-  summarize(perc = sum(stp)/n())
+  summarise(sdp = sum(smoking, na.rm = TRUE))
+
+data_sdp <- data %>%
+  left_join(sdp, by = 'parent_id')
 
 # Make two plots: distribution of both types of SWAN scores by SDP status
-sdp_plot_1 <- ggplot(sdp, aes(x=swan_inattentive, fill=sdp)) +
+sdp_plot_1 <- ggplot(data_sdp, aes(x=swan_inattentive, fill=as.factor(sdp))) +
   geom_density(alpha=.25) +
-  ylim(0,0.1) +
+  ylim(0,0.35) +
   geom_vline(xintercept = 6, linetype="dashed", 
              color = "black", linewidth=0.5) +
-  annotate(geom="text", x=9.5, y=0.08, label="Likely ADHD \nInattentive") +
+  annotate(geom="text", x=9.5, y=0.32, label="Likely ADHD \nInattentive") +
   scale_fill_manual(name = "Smoking During Pregnancy?",
-                    labels = c("No", "Yes"),
-                    values = ghibli_palette('LaputaMedium')[c(4,6)]) +
-  labs(title = 'Distribution of Swan Inattentive Scores by SDP Status',
-       x = 'Swan Inattentive Score',
+                    labels = c("No", "First Trimester", "All Trimesters"),
+                    values = ghibli_palette('LaputaMedium')[c(3,6,7)]) +
+  labs(title = 'Distribution of SWAN Inattentive Scores by Trimesters Smoked',
+       x = 'SWAN Inattentive Score',
        y = 'Density') 
 
-sdp_plot_2 <- ggplot(sdp, aes(x=swan_hyperactive, fill=sdp)) +
+sdp_plot_2 <- ggplot(data_sdp, aes(x=swan_hyperactive, fill=as.factor(sdp))) +
   geom_density(alpha=.25) +
-  ylim(0,0.1) +
+  ylim(0,0.2) +
   geom_vline(xintercept = 6, linetype="dashed", 
                 color = "black", linewidth=0.5) +
-  annotate(geom="text", x=9.5, y=0.07, label="Likely ADHD \nHyperactive") +
+  annotate(geom="text", x=9.5, y=0.16, label="Likely ADHD \nHyperactive") +
   scale_fill_manual(name = "Smoking During Pregnancy?",
-                    labels = c("No", "Yes"),
-                    values = ghibli_palette('LaputaMedium')[c(4,6)]) +
-  labs(title = 'Distribution of Swan Hyperactive Scores by SDP Status',
-       x = 'Swan Hyperactive Score',
+                    labels = c("No", "First Trimester", "All Trimesters"),
+                    values = ghibli_palette('LaputaMedium')[c(3,6,7)]) +
+  labs(title = 'Distribution of SWAN Hyperactive Scores by Trimesters Smoked',
+       x = 'SWAN Hyperactive Score',
        y = 'Density')
 
 grid.arrange(sdp_plot_1, sdp_plot_2, nrow = 2)
 ```
 
-We also want to identify any differences in self-regulatory problems as a result of smoking during pregnancy. Contrary to ADHD, conduct disorder, and substance use, this is an internalizing behavior. For this study, these were measured through two different ways: the Brief Problem Monitor and Emotion Regulation Questionnaire.
+**Figure 3. SWAN Scores by SDP Status**
+
+#### Self-Regulatory Problems
+
+Problems with self-regulation as a result of smoking during pregnancy are also of interest. Contrary to ADHD, conduct disorder, and substance use, self-regulation is an internalizing behavior. This was measured in two different ways: the Brief Problem Monitor (BPM) and Emotion Regulation Questionnaire (ERQ).
 
 The Brief Problem Monitor is used for normed multi-informant assessment of children's functioning & responses to interventions. In this study, it has been completed both by parents and children. There are separate scales for attention problems, internalizing problems, and externalizing problems [@ASEBA_2022].
 
-The average BPM score for attention problems and externalizing problems on self appears to be higher for children exposed to SDP than children who have not been exposed to SDP. This could explain the higher SWAN scores and the increased substance use among children exposed to SDP. However, we do see that there does not appear to be much difference in the scores for internalizing problems on self between children exposed to SDP and those not exposed.
+Figure 4 shows the average BPM scores across all three different scales by the number of trimesters the mother smoked. The plot on the top uses the scores from the child's assessment of themself and the plot on the bottom uses the scores from the mother's assessment of their child.
+
+For mothers who never smoked and those who smoked all three semesters, the difference in BPM scores from the child and the mother are not very pronounced. The largest differences can be seen among mothers who smoked for one trimester; specifically for internalizing problems. In fact, regardless of the mother's smoking behavior, the score for internalizing problems from the parent was significantly higher than the score from the child. We also see something similar with attention problems, though the differences are not as large.
+
+In the plot of scores collected from the child, we see that BPM scores related to attention problems and externalizing problems on self appear to increase somewhat as the number of trimesters the mother smoked increases. This trend does not appear in the plot of scores collected from the mother, but we do see that the average scores from all three sections are higher for children whose mother smoked during all three trimesters compared to no trimesters. This could be indicative of an effect on smoking during pregnancy on the child's behavior problems.
 
 ```{r, fig.align = 'center', fig.height = 4}
 # Create a separate column to store the races of the children along with the SDP
 # effects. There are two categories of biracial children (AIAN/Black and Black/
 # White) so I just defined these as biracial.
-sdp_race <- sdp %>%
+sdp_race <- data_sdp %>%
   mutate(child_race = case_when(taian == 1 & tblack == 'white' |
                                   twhite == 1 & tblack == 1~ 'biracial',
                           taian == 1 ~ 'aian',
@@ -445,16 +436,24 @@ sdp_race <- sdp %>%
 
 # For each category of SDP and Race, calculate the average ERQ scores for
 # expressive suppression and cognitive reappraisal.
-erq <- sdp_race %>%
+erq_child <- sdp_race %>%
   filter(!is.na(child_race)) %>%
   group_by(sdp, child_race) %>%
   summarize(cog = mean(erq_cog, na.rm=TRUE),
             exp = mean(erq_exp, na.rm=TRUE), .groups = 'drop_last') %>%
   gather(key = 'erq', value = 'value', c(cog, exp))
 
+erq_parent <- sdp_race %>%
+  left_join(race_lookup, by = 'parent_id') %>%
+  filter(!is.na(race)) %>%
+  group_by(sdp, race) %>%
+  summarize(cog = mean(erq_cog_a, na.rm=TRUE),
+            exp = mean(erq_exp_a, na.rm=TRUE), .groups = 'drop_last') %>%
+  gather(key = 'erq', value = 'value', c(cog, exp))
+
 # For each category of SDP and Race, calculate the average BPM scores for
 # attention, externalizing, and internalizing.
-bpm <- sdp_race %>%
+bpm_child <- sdp_race %>%
   filter(!is.na(child_race)) %>%
   group_by(sdp, child_race) %>%
   summarize(att = mean(bpm_att, na.rm=TRUE),
@@ -462,43 +461,121 @@ bpm <- sdp_race %>%
             int = mean(bpm_int, na.rm=TRUE), .groups = 'drop_last') %>%
   gather(key = 'bpm', value = 'value', c(att,ext,int))
 
+bpm_parent <- sdp_race %>%
+  left_join(race_lookup, by = 'parent_id') %>%
+  filter(!is.na(race)) %>%
+  group_by(sdp, race) %>%
+  summarize(att = mean(bpm_att_p, na.rm=TRUE),
+            ext = mean(bpm_ext_p, na.rm=TRUE),
+            int = mean(bpm_int_p, na.rm=TRUE), .groups = 'drop_last') %>%
+  gather(key = 'bpm', value = 'value', c(att,ext,int))
+
 # Plot average BPM values by SDP status
-ggplot(bpm, aes(x = sdp, y = value, fill = bpm)) +
+p1 <- ggplot(bpm_child, aes(x = sdp, y = value, fill = bpm)) +
   geom_bar(stat = "identity", position = position_dodge()) +
-  scale_fill_manual(name = 'Brief Problem Monitor Section', labels = c('Attention Problems on Self',
-                                                'Externalizing Problems on Self',
-                                                'Internalizing Problems on Self'),
+  scale_fill_manual(name = 'BQM Section', 
+                    labels = c('Attention Problems on Self',
+                               'Externalizing Problems on Self',
+                               'Internalizing Problems on Self'),
                       values = ghibli_palette('LaputaMedium')[c(1,3,5)]) +
   labs(title = 'Average Brief Problem Monitor Scores by SDP Exposure',
-       x = 'SDP Exposure',
+       x = 'Trimesters the Mother Smoked',
        y = 'Average Score')
+
+p2 <- ggplot(bpm_parent, aes(x = sdp, y = value, fill = bpm)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  scale_fill_manual(name = 'BPM Section', 
+                    labels = c('Attention Problems on Child',
+                               'Externalizing Problems on Child',
+                               'Internalizing Problems on Child'),
+                      values = ghibli_palette('LaputaMedium')[c(1,3,5)]) +
+  labs(title = 'Average Brief Problem Monitor Scores by SDP Exposure',
+       x = 'Trimesters the Mother Smoked',
+       y = 'Average Score')
+grid.arrange(p1, p2, nrow=2,ncol=1)
 ```
 
-We have also been provided scores form the Emotion Regulation Questionnaire. The Emotion Regulation Questionnaire consists of 10 questions that involve two distinct aspects of an individual's emotional life: their emotional experience (i.e. what they feel inside) and their emotional expression (i.e. how they show their emotions in the way they talk, gesture, or behave). Each of the 10 questions are answered using a scale ranging from 1-7, with 1 indicating they strongly disagree with a statement and 7 indicating they strongly agree. The higher the score, the greater the use of cognitive reappraisal or emotion suppression [@gross2003individual].
+**Figure 4. Average BPM Scores by SDP Reported by Child (Top) and Parent (Bottom)**
 
-When comparing the responses to the emotion regulation questionnaire by smoking during pregnancy, we see that children who have been exposed to SDP use expressive suppression more than children who have not been exposed. Additionally, the average score for cognitive reappraisal appears to be higher for children exposed to SDP than those not exposed, although this difference appears to be relatively small, with only a difference of approximately 0.5.
+We have also been provided scores from the Emotion Regulation Questionnaire. The ERQ consists of 10 questions that involve two distinct aspects of an individual's emotional life: their emotional experience (i.e. what they feel inside) and their emotional expression (i.e. how they show their emotions in the way they talk, gesture, or behave). Each of the 10 questions are answered using a scale ranging from 1-7, with 1 indicating they strongly disagree with a statement and 7 indicating they strongly agree. The higher the score, the greater the use of cognitive reappraisal or emotion suppression [@gross2003individual]. Similarly, this has been completed by both the parent and the child.
+
+Figure 5 shows the Average ERQ scores by the number of trimesters the mother smoked. The plot on the top uses ERQ scores from the child, while the plot on the bottom uses ERQ scores from the mother. Unlike the BPM scores, we see that there does not appear to be a significant difference between the scores collected from the child and the scores collected from the mother.
+
+There also does not appear to be an effect of smoking during pregnancy on ERQ scores. As the number of trimesters the mother smoked during increases, we don't see a clear trend. However, as there is no information on mothers who smoked during just two semesters, this could just be due to the lack of data available.
 
 ```{r, fig.align = 'center', fig.height = 4}
 # Plot average ERQ values by SDP status
-erq_plot <- ggplot(erq, aes(x = sdp, y = value, fill = erq)) +
+erq_plot <- ggplot(erq_child, aes(x = sdp, y = value, fill = erq)) +
   geom_bar(stat = "identity", position = position_dodge()) +
-  scale_fill_manual(name = 'Emotion Regulation Questionnaire Section', labels = c('Cognitive Reappraisal',
-                                                'Expressive Suppression'),
+  scale_fill_manual(name = 'ERQ Section', 
+                    labels = c('Cognitive Reappraisal',
+                               'Expressive Suppression'),
                       values = ghibli_palette('LaputaMedium')[c(2,4)]) +
-  labs(title = 'Average Emotion Regulation Questionnaire Scores by SDP Exposure',
-       x = 'SDP Exposure',
+  labs(title = 'Average ERQ Scores by SDP Exposure',
+       x = 'Trimesters the Mother Smoked',
        y = 'Average Score')
 
-suppressWarnings(print(erq_plot))
+erq_plot_parent <- ggplot(erq_parent, aes(x = sdp, y = value, fill = erq)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  scale_fill_manual(name = 'ERQ Section', 
+                    labels = c('Cognitive Reappraisal',
+                               'Expressive Suppression'),
+                      values = ghibli_palette('LaputaMedium')[c(2,4)]) +
+  labs(title = 'Average ERQ Scores by SDP Exposure',
+       x = 'Trimesters the Mother Smoked',
+       y = 'Average Score')
+
+grid.arrange(erq_plot, erq_plot_parent, nrow = 2, ncol = 1)
 ```
+
+**Figure 5. Average ERQ Scores by SDP Reported by Child (Top) and Parent (Bottom)**
+
+#### Postpartum Smoking
+
+The effect of smoking during pregnancy has been investigated, but what about the effect of smoking after pregnancy? Self-reported smoke exposure, by either the mother or partner, was collected at six different time points after the pregnancy, ranging from 6 months postpartum to 5 years postpartum. The values from each of these time points were combined to quantify at exactly how many time points postpartum the child was exposed to smoke. Based on these values, we wanted to look at how this impacted the child's behavior.
+
+Table 5 shows the average score from the BPM, ERQ, and SWAN Inattentive/Hyperactive assessments by the number of postpartum visits with self-reported smoke exposure. The clearest pattern is seen with the average ERQ score, where we see a clear increase in the score as the number of postpartum visits increases. We see a similar pattern for the SWAN Inattentive score, but for BPM and SWAN Hyperactive, we see that the values oscillate between increases and decreasing. This could be due to the data, as the majority of individuals reported no smoke exposure at any of the postpartum visits, so the average values are heavily influenced by one or two data points that may not be representative of the target population. Still, based on the data we have, there does appear to be a link between postpartum smoke exposure and a child's behavior.
+
+```{r}
+smoke_pp <- data %>%
+  mutate(smoke_exp_pp = smoke_exposure_6mo + smoke_exposure_12mo + smoke_exposure_2yr +
+                               smoke_exposure_3yr + smoke_exposure_4yr + 
+           smoke_exposure_5yr) %>%
+  dplyr::select(parent_id, smoke_exp_pp, bpm_att, bpm_ext, bpm_int, 
+                erq_cog, erq_exp,
+                swan_inattentive, swan_hyperactive)
+
+behavior_by_smoke_pp <- smoke_pp %>% 
+  filter(!(is.na(smoke_exp_pp))) %>%
+  group_by(smoke_exp_pp) %>%
+  summarise(avg_bpm = round(mean(bpm_att + bpm_ext + bpm_int, na.rm = TRUE),2),
+            avg_erq = round(mean(erq_cog + erq_exp, na.rm = TRUE),2),
+            avg_swan_inattentive = round(mean(swan_inattentive, na.rm = TRUE),2),
+            avg_swan_hyperactive = round(mean(swan_hyperactive, na.rm = TRUE),2))
+
+
+colnames(behavior_by_smoke_pp) <- c('Count of Postpartum Smoke Exposure',
+                                    'Average BPM Score','Average ERQ Score', 
+                                    'Average SWAN Inattentive Score',
+                                    'Average SWAN Hyperactive Score')
+
+
+kbl(behavior_by_smoke_pp, booktabs = T, escape = F, caption = 'Effects of Postpartum Smoking on Internalizing and Externalizing Behaviors') %>%
+  kable_styling(latex_options = 'HOLD_position') %>%
+  column_spec(1:5, width = '3cm')
+```
+
+## Discussion
 
 This analysis has provided several points worth further research in analyzing the effects of pre- and post-natal smoke exposure to children. Not only that, but we have investigated the rates of smoking among the women in the study both during and after pregnancy. We have analyzed race-based differences, as it could be a potential confounder, while also determining how heavy of a smoker these individuals are.
 
-Our analysis confirmed the belief that that smoking during pregnancy can be associated with ADHD. We have seen that smoking during pregnancy can lead to higher scores on the SWAN scores, indicating either Inattentive or Hyperactive ADHD. These differences seem more pronounced with Hyperactive ADHD however. We also see more problems with attention and externalizing behaviors among children exposed to SDP compared to those not exposed, though we do not see a similar pattern when it comes to internalizing behaviors. This could be an area for further research, as the sample size in this study is too small to make any generalizations.
+The analysis confirmed the initial belief that smoking during pregnancy can be associated with different externalizing behaviors, such as ADHD. We saw that smoking during pregnancy can lead to higher scores on the SWAN scores, indicating either Inattentive or Hyperactive ADHD. However, these differences seem more pronounced with Hyperactive ADHD.
 
-We also find that children exposed to SDP are more likely to utilize expressive suppression and cognitive reappraisal than children without SDP. This could be indicative that children with SDP are more in-tune with their own emotions, as they are more practiced with controlling them and re-framing certain situations. However, there would need to be more data collected to confirm this hypothesis.
+Additionally, there appear to be more problems with attention and externalizing behaviors among children exposed to SDP compared to those not exposed, though we do not see a similar pattern when it comes to internalizing behaviors. This could be an area for further research, as the sample size in this study is too small to make any generalizations.
 
-Ultimately, it would appear that there are negative effects of smoking during pregnancy on children, but in order to make any conclusive statements, we would need more data as well as measures of smoking behavior that are not self-reported, due to the imperfect nature of self-reporting. That being said, this analysis has highlighted associations with SDP that are worth looking into.
+## Conclusion
+
+This analysis unveils complex relationships between maternal smoking, child behavior, and self-regulation. The study raises awareness of the persistent issue of smoking during pregnancy, its consequences, and the need for targeted interventions. Despite the limitations of a small sample size and missing data, the findings underscore the importance of continuous research in understanding the long-term effects of prenatal and postnatal smoke exposure on children.
 
 \newpage
 
